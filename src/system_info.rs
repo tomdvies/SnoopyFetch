@@ -63,7 +63,7 @@ fn get_memory_total() -> u64 {
 fn get_memory_used() -> u64 {
     sys_info::mem_info()
         .map(|mem| {
-            // Total - (Free + Buffers + Cached) = Actually used memory
+            // Total - (Free - avail) = Actually used memory
             mem.total.saturating_sub(mem.avail)
         })
         .unwrap_or(0)
