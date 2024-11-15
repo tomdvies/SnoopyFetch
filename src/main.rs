@@ -2,6 +2,7 @@ mod display;
 mod system_info;
 
 use clap::Parser;
+use rand;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -40,6 +41,10 @@ struct Args {
     /// Print information on the right side (default is left)
     #[arg(short, long, default_value = "false")]
     right: bool,
+
+    /// Select ASCII art to display: 'snoopy', 'tree', or 'random'
+    #[arg(short, long, default_value = "snoopy", value_parser = ["snoopy", "tree", "random"])]
+    art: String
 }
 
 #[derive(Debug)]
@@ -53,11 +58,23 @@ pub struct DisplayConfig {
     pub show_uptime: bool,
     pub show_shell: bool,
     pub show_packages: bool,
+    art: String
 }
 
 fn main() {
     let args = Args::parse();
     let system_info = system_info::collect_system_info();
+
+    let final_art = if args.art == "random" {
+        // Simple random selection between snoopy and tree
+        if rand::random::<bool>() {
+            "snoopy".to_string()
+        } else {
+            "tree".to_string()
+        }
+    } else {
+        args.art
+    };
 
     let config = DisplayConfig {
         info_on_left: !args.right,
@@ -69,7 +86,8 @@ fn main() {
         show_uptime: !args.no_uptime,
         show_shell: !args.no_shell,
         show_packages: !args.no_packages,
-    };
+        art: final_art
+    }; 
 
     display::print_system_info(&system_info, &config);
 }

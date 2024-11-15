@@ -27,7 +27,9 @@ fn strip_ansi_length(s: &str) -> usize {
 
 pub fn print_system_info(info: &SystemInfo, config: &DisplayConfig) {
     // Split ASCII art and system info into lines
-    let logo_lines: Vec<String> = get_ascii_logo()
+    let logo_str = if config.art == "snoopy" { get_ascii_logo_snoopy() } else { get_ascii_logo_tree() };
+
+    let logo_lines: Vec<String> = logo_str
         .to_string()
         .lines()
         .map(String::from)
@@ -111,7 +113,7 @@ pub fn print_system_info(info: &SystemInfo, config: &DisplayConfig) {
 //     )
 // }
 
-fn get_ascii_logo() -> String {
+fn get_ascii_logo_snoopy() -> String {
     // format!("{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
     // "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡴⠚⠉⠉⠉⠉⠓⠦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     // "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⢀⣼⡷⠶⠖⠶⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -159,5 +161,27 @@ fn get_ascii_logo() -> String {
         "⠀⢠⠁⠀⠀⠀⠀⠀⠀⠀⠀⢠⢳⣿⣿⣿⣄⠄⠉⠁⡔⠞⠢⡀⠀⠀⠀⠀⢄⡀".white(),
         "⣐⣺⡀⠀⠀⠀⠀⠀⠀⠀⠀⡆⣼⣿⣿⡿⠀⠤⠤⠤⠏⠀⠀⠁⠀⠀⢆⠀⠀⡡".white(),
         "⠈⠋⠈⠒⠦⠤⠤⠒⠒⠒⠒⠧⣻⡿⠟⠳⠤⠤⠤⠤⠤⠤⠔⠑⠒⠊⠀⠁⠂⠁".white()
+    )
+}
+
+fn get_ascii_logo_tree() -> String {
+    format!("{}
+{}
+{}
+{}
+{}{}
+{}
+{}
+{}",
+        "        ccc8OE88oo".green(),
+        // "      C8O8O8Q8PoOb o8oo".green(),
+        "   dB69QO8PdUOpugoO9bD".green(),
+        " CggbU8OU qOp qOdoUOdcb".green(),
+        "      6OuU  /p u gcoUodpP".green(),
+        "         \\\\//  /".white(), "douUP".green(),
+        "          ||  ||".white(),
+        // "          ||  |||".white(),
+        "          ||  ||".white(),
+        "    _____//   \\\\____".white()
     )
 }
